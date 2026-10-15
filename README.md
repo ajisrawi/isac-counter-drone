@@ -53,17 +53,20 @@ turns those fixes into live tracks.
 ### Signal chain
 
 ```mermaid
-flowchart LR
-    A["📶 IQ samples<br/>SDR or RAN tap"] --> B["⏱️ Sync<br/>PSS · CFO · PCI"]
-    B --> C["〰️ OFDM demod<br/>resource grid Y"]
-    C --> D["🔑 Reference X<br/>CRS · SSB · full grid"]
-    D --> E["➗ Channel<br/>H = Y / X"]
-    E --> F["🧹 Clutter removal<br/>ECA · static cancel"]
-    F --> G["🗺️ Range–Doppler<br/>map"]
-    G --> H["🎯 2-D CFAR<br/>detections"]
-    H --> I["📐 Multistatic<br/>localisation"]
-    I --> J["🛤️ Kalman<br/>tracking"]
-    J --> K["🖥️ C2 / map<br/>JSON · UDP"]
+flowchart TB
+    subgraph S1["① Receive: per sensing node"]
+        direction LR
+        A["📶 IQ samples<br/>SDR or RAN tap"] --> B["⏱️ Sync<br/>PSS · CFO · PCI"] --> C["〰️ OFDM demod<br/>grid Y"] --> D["🔑 Reference X<br/>CRS · SSB · full grid"]
+    end
+    subgraph S2["② Detect: per sensing node"]
+        direction LR
+        E["➗ Channel<br/>H = Y / X"] --> F["🧹 Clutter removal<br/>ECA · static cancel"] --> G["🗺️ Range–Doppler<br/>map"] --> H["🎯 2-D CFAR<br/>detections"]
+    end
+    subgraph S3["③ Fuse: edge / MEC"]
+        direction LR
+        I["📐 Multistatic<br/>localisation"] --> J["🛤️ Kalman<br/>tracking"] --> K["🖥️ C2 / map<br/>JSON · UDP"]
+    end
+    S1 --> S2 --> S3
 ```
 
 ---
