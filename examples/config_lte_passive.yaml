@@ -1,0 +1,42 @@
+# Passive LTE field configuration for `python -m isac run`
+# All recordings must start at the same instant (GPSDO / PPS-triggered) and use
+# the carrier's native sample rate (10 MHz LTE -> 15.36 Msps).
+
+carrier:
+  rat: LTE
+  bw_mhz: 10
+  fc_hz: 2655.0e6          # downlink centre frequency of the illuminating cell
+
+format: cf32               # cf32 | ci16 | ci8
+cpi_s: 0.1                 # coherent processing interval
+skip_s: 0.0
+
+origin: {lat: 31.9539, lon: 35.9106, alt: 800}   # local ENU origin (example: Amman)
+
+sensing:                   # any SensingConfig field
+  max_range_m: 3000
+  max_range_rate_mps: 60
+  min_snr_db: 13
+  cfar_pfa: 1.0e-6
+
+pairs:                     # positions in metres, ENU relative to origin
+  - {id: enb-rx1, mode: crs, pci: null, tx: [0, 0, 30], rx: [1400, 100, 15],   file: rx1.cf32}
+  - {id: enb-rx2, mode: crs, pci: null, tx: [0, 0, 30], rx: [-200, 1500, 20],  file: rx2.cf32}
+  - {id: enb-rx3, mode: crs, pci: null, tx: [0, 0, 30], rx: [-1200, -800, 15], file: rx3.cf32}
+  - {id: enb-rx4, mode: crs, pci: null, tx: [0, 0, 30], rx: [900, -1100, 25],  file: rx4.cf32}
+  # integrated / two-channel example:
+  # - {id: gnb-rx5, mode: tx-tap, tx: [0,0,30], rx: [800,800,20], file: rx5.cf32, tx_file: gnb_tx.cf32}
+
+locator:
+  area: [-2500, 2500, -2500, 2500]
+  z_prior: 100
+  sigma_z: 80
+  min_pairs: 3
+
+tracker:
+  confirm_hits: 3
+  max_misses: 3
+
+output:
+  jsonl: tracks.jsonl
+  udp: 127.0.0.1:5005      # to a C2 / map display

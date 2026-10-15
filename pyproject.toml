@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "isac"
+version = "0.1.0"
+description = "Integrated sensing and communication (ISAC) for 4G/5G networks: passive and network-integrated drone detection"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24", "scipy>=1.10", "pyyaml>=6"]
+
+[project.optional-dependencies]
+plot = ["matplotlib>=3.7"]
+sdr = []          # install SoapySDR + device module from your OS / vendor packages
+dev = ["pytest>=7", "matplotlib>=3.7"]
+
+[project.scripts]
+isac = "isac.cli:main"
+
+[tool.setuptools]
+packages = ["isac"]

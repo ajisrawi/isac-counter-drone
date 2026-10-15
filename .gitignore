@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+build/
+dist/
+.venv/
+
+# Private: outreach and correspondence
+outreach/
+
+# Local run outputs (figures for the README live in docs/images/)
+results/
+tracks.jsonl
+
+# IQ recordings
+*.cf32
+*.ci16
+*.ci8
+*.sigmf-data
